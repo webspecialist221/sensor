@@ -1,0 +1,58 @@
+#include <math.h>
+
+double finalArray[7][3] = 
+{
+    {32,1.1173,-74.8},
+    {252,0.1743,-37.0},
+    {363,0.11,-1.37},
+    {671,0.104,9.90},
+    {825,0.157,41.7},
+    {912,0.28,65.9},
+    {1023,1.5312,57.6}
+    };
+
+    
+void setup() {
+    // put your setup code here, to run once:
+    Serial.begin(9600);
+    pinMode(A0, INPUT);
+
+} 
+
+double Temprature(int RawADC, double a, double b) {
+   double Temp;
+   Temp = a*RawADC + b;
+   Serial.println(a);
+   Serial.println(b);
+   return Temp;
+}
+  
+
+
+int increment = 0;
+int i = 0;
+bool value = true;
+int v = 0;
+
+void loop() {
+  i = -1;
+  value = true;
+  v = analogRead(A0);
+  Serial.print(int(v));
+  Serial.print("  Measure ");
+  Serial.print(int(increment));
+  Serial.print(" : ");
+  while((i<=6) && (value))
+  {
+    i++;
+    if(v <= finalArray[i][0])
+    {
+      value = false;
+      Serial.println(i);
+    }
+  }
+  Serial.println(int (Temprature(v,finalArray[i][1], finalArray[i][2])));  // display Celsius
+  increment++;
+  delay(5000);
+
+}
